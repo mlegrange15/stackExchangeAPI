@@ -5,12 +5,15 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "yarn --cwd client start",
+    "dev": "concurrently \"yarn run client\" \"yarn run server\""
   },
   "repository": "https://github.com/mlegrange15/stackExchangeAPI.git",
   "author": "Michael LeGrange",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "express": "^4.16.4"
