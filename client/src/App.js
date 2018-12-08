@@ -7,53 +7,100 @@ import './App.css';
 import API from "./components/utils/API";
 import Questions from "./components/Questions"
 import Users from "./components/Users"
+import Stats from "./components/Stats"
 
 class App extends Component {
   state = {
     users: [],
-    show: false
+    showUsers: false,
+    showStats: false,
+    questionsData: []
   };
 
-  componentDidMount() {
-    console.log('componentDidMount working');
-
+  handleGetUsersClick = (e) => {
+    e.preventDefault();
     API.getUsers()
       .then(res => {
         this.setState({
           users: res.data,
+          showUsers: true
         })
-        console.log("componentDidMount",this.state.users);
       })
       .catch(err => console.log(err));
-  }
+  };
 
-  handleGetUsersClick = (e , users) => {
+  handleGetQuestionsClick = (e, users) => {
     e.preventDefault();
-    console.log('working');
-    console.log(users[0].user_id);
-    let userID = users[0].user_id
+    let questionsDataArray = []
+
+    // let questionsCallData = {
+
+    //   TotalQuestionsAsked: 0,
+    //   UsersAskedQuestions: 0,
+    //   QuestionsAnswered: 0,
+    //   UsersAskedMultipleQuestions: 0,
+    // }
+
+    for (let i = 0; i < users.length; i++) {
+      let userID = users[i].user_id
+      let questionsData = this.callForQuestions(userID)
+      questionsDataArray.push(questionsData)
+      console.log(questionsData.questionsCallData);
+
+    }
+    console.log(questionsDataArray[4]);
+
+    for (let i = 0; i < questionsDataArray.length; i++) {
+      // console.log(questionsDataArray[i].TotalQuestionsAsked);
+      // console.log(questionsDataArray[i].UsersAskedMultipleQuestions);
+      // console.log(questionsDataArray[i].UsersAskedQuestions);
+    }
+
+
+
+    return this.setState({
+      // questionsData: questionsDataArray,
+      showStats: true,
+    })
+
+  };
+
+  callForQuestions = (userID) => {
+
+    let questionsCallData = {
+
+      TotalQuestionsAsked: 0,
+      UsersAskedQuestions: 0,
+      QuestionsAnswered: 0,
+      UsersAskedMultipleQuestions: 0,
+    }
 
     API.getUsersQuestions(userID)
       .then(res => {
-        // this.setState({
-        //   users: res.data
-        // })
-        console.log(res.data);
+        let userTotalQuestions = res.data.length
 
-// LOOP OVER USERS
-// FOR EACH USER MAKE API CALL PASSING THROUGH THEIR ID
-// GET RES.DATA.LENGTH FOR EACH RESPONSE
-// STORE THAT IN VARIABLES THAT
-        // HOW MANY USERS HAVE ASKED A QUESTION (RETURN NOT EMPTY ARRAYS)
-        // HOW MANY TOTAL QUESTIONS WERE ANSWERED
-        // HOW MANY USERS ASKED MORE THAN 1 QUESTION (RES.DATA.LENGTH > 1)
-// SET STATE WITH THESE VARIABLES AND PASS DOWN TO RENDER ON PAGE
-// SET STATE TO SHOW OTHER COMPONENTS
+        questionsCallData.TotalQuestionsAsked += userTotalQuestions
 
-// ******* ONCE DONE HERE TRY AND REFACTOR SO THAT THE QUESTIONS ATTACH AND STAY WITH THE APPROPRIATE USERS
+        if (userTotalQuestions > 1) {
+          questionsCallData.UsersAskedQuestions++
+          questionsCallData.UsersAskedMultipleQuestions++
 
+          for (let i = 0; i < userTotalQuestions; i++) {
+            if (res.data[i].is_answered === true) {
+              questionsCallData.QuestionsAnswered++
+            }
+          }
+        } else if (userTotalQuestions > 0) {
+          questionsCallData.UsersAskedQuestions++
+        }
+        // ******* ONCE DONE HERE TRY AND REFACTOR SO THAT THE QUESTIONS ATTACH AND STAY WITH THE APPROPRIATE USERS
+
+        console.log(questionsCallData.TotalQuestionsAsked);
+        
       })
       .catch(err => console.log(err));
+
+    return questionsCallData
   };
 
   render() {
@@ -66,23 +113,30 @@ class App extends Component {
           </Container>
         </Jumbotron>
         <Container>
-          <Row>
+          <Row className="mb-3">
             <Col sm="12">
               <Card body>
-                <CardTitle><h2>Show me who joined Stack Overflow last month?</h2></CardTitle>
-                <Button onClick={e => this.handleGetUsersClick(e, this.state.users)} color="info" size="lg" block>GO</Button>
+                <CardTitle>Search Stack Overflow Users:</CardTitle>
+                <h6>Show me who joined Stack Overflow last month?</h6>
+                <Button onClick={e => this.handleGetUsersClick(e)} color="info" size="lg" block>GO</Button>
               </Card>
             </Col>
           </Row>
 
           <Questions
             users={this.state.users}
-            show={this.state.show}
+            showUsers={this.state.showUsers}
+            handleGetQuestionsClick={this.handleGetQuestionsClick}
+          />
+
+          <Stats
+            showStats={this.state.showStats}
+            questionsData={this.state.questionsData}
           />
 
           <Users
             users={this.state.users}
-            show={this.state.show}
+            showUsers={this.state.showUsers}
           />
 
         </Container>

@@ -5,7 +5,7 @@ const axios = require('axios')
 // Get api/users
 router.get('/users', (req, res) => {
     let userArray = []
-    axios.get('https://api.stackexchange.com/2.2/users?pagesize=1&fromdate=1541030400&todate=1543536000&order=desc&sort=creation&site=stackoverflow')
+    axios.get('https://api.stackexchange.com/2.2/users?pagesize=8&fromdate=1541030400&todate=1543536000&order=asc&sort=creation&site=stackoverflow')
         .then(response => {
             response.data.items.map(user => {
                 let newUser = {
