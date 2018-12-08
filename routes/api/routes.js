@@ -5,7 +5,7 @@ const axios = require('axios')
 // Get api/users
 router.get('/users', (req, res) => {
     let userArray = []
-    axios.get('https://api.stackexchange.com/2.2/users?pagesize=8&fromdate=1541030400&todate=1543536000&order=asc&sort=creation&site=stackoverflow')
+    axios.get('https://api.stackexchange.com/2.2/users?pagesize=20&fromdate=1541030400&todate=1543536000&order=asc&sort=creation&site=stackoverflow')
         .then(response => {
             response.data.items.map(user => {
                 let newUser = {
@@ -20,7 +20,6 @@ router.get('/users', (req, res) => {
                     newUser.profile_image = user.profile_image,
                     userArray.push(newUser)
             })
-            // console.log("THIS IS THE USER ARRAY", userArray);
             res.send(userArray)
         })
         .catch(error => {
@@ -30,7 +29,6 @@ router.get('/users', (req, res) => {
 
 router.get('/questions/:id', (req, res) => {
     let id = req.params.id
-    console.log("This is the params test ", id);
     axios.get('https://api.stackexchange.com/2.2/users/' + id + '/questions?order=desc&sort=activity&site=stackoverflow')
         .then(response => {
             res.send(response.data.items)
