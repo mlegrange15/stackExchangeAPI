@@ -5,8 +5,7 @@ export default {
   getUsers: function() {
     return axios.get("/api/users");
   },
-  getUsersQuestions: function(userID) {
-    return axios.get("/api/questions/" + userID);
+  getUsersQuestions: function(userIDs) {
+    return axios.get("/api/questions/" + userIDs);
   },
-
 };

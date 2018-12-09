@@ -37,22 +37,33 @@ class App extends Component {
 
   handleGetQuestionsClick = (e, users) => {
     e.preventDefault();
+
+    let userIDs = "";
+
     for (let i = 0; i < users.length; i++) {
-      let userID = users[i].user_id;
-      this.callForQuestions(userID);
+      userIDs += users[i].user_id + ";";
     }
+
+    userIDs = userIDs.slice(0,-1)
+
+    console.log("IDS array post slice", userIDs);
+
+    this.callForQuestions(userIDs);
     return this.setState({
       showStats: true
     });
   };
 
-  callForQuestions = userID => {
-    API.getUsersQuestions(userID)
+  callForQuestions = userIDs => {
+
+    API.getUsersQuestions(userIDs)
       .then(res => {
         let userQuestions = res.data;
+        
         this.setState({
-          questionsData: [...this.state.questionsData, userQuestions]
+          questionsData: [userQuestions]
         });
+
       })
       .catch(err => console.log(err));
   };
