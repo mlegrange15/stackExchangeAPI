@@ -1,17 +1,44 @@
 # stackExchangeAPI
 
-Build Web App using Stack Exchange API
+## Overview: 
 
-App should have frontend and backend
+This app will allow you to search for users on Stack Overflow.
 
-Backend handles API calls
+Step 1: run `yarn install` in both the server and the client to get all needed dependencies 
 
-Frontend calls backend
+Step 2: run `yarn run dev` to launch the application locally 
 
-Make a call to API getting recently joined users
+Step 3: Fill out form and click 'Go'
 
- - Of those users:
-    - How many joined last month?
-    - How many asked a question?
-    - How many of those questions have answers?
-    - How many of these users have asked multiple questions?
+Step 4: Click button category to get more information on the current users ie 'Questions'
+
+Step: You will see the users information and more stats relevant to the chosen category 
+
+
+## Screenshot:
+
+![Alt text](stackexchange.png?raw=true "App Screenshot")
+
+## Technologies used:
+
+React.js
+
+Express.js
+
+Node.js
+
+Stack Exchange API
+
+Bootstrap / Reactstrap
+
+ES6
+
+Axios
+
+## App Link:
+
+https://protected-journey-74273.herokuapp.com/
+
+## Author:
+
+Michael LeGrange
