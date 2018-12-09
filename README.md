@@ -35,10 +35,6 @@ ES6
 
 Axios
 
-## App Link:
-
-https://protected-journey-74273.herokuapp.com/
-
 ## Author:
 
 Michael LeGrange
