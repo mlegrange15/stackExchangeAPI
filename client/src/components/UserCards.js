@@ -8,7 +8,7 @@ class UserCards extends Component {
     render() {
         return (
             <Col sm="4">
-                <Card>
+                <Card className="shadow-lg mb-2">
                     <CardImg top width="100%" src={this.props.image} alt="Profile Image" />
                     <CardBody>
                         <CardText>Display Name: {this.props.name}</CardText>
